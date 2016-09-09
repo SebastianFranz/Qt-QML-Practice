@@ -1,18 +1,3 @@
-/*#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-#include <QtCore>
-#include <QtWidgets/QApplication>
-
-int main(int argc, char *argv[])
-{
-    QApplication app(argc, argv);
-
-    QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-
-    return app.exec();
-}*/
-
 /****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
@@ -56,11 +41,11 @@ int main(int argc, char *argv[])
     QQuickView viewer;
 
     QScopedPointer<WorkoutViewModel> Model(new WorkoutViewModel);
-    viewer.rootContext()->setContextProperty("asdf",Model.data());
+    viewer.rootContext()->setContextProperty("ViewModel",Model.data());
 
     QObject::connect(viewer.engine(), &QQmlEngine::quit, &viewer, &QWindow::close);
 
-    viewer.setSource(QUrl("qrc:/main.qml"));
+    viewer.setSource(QUrl("qrc:/Pacman.qml"));
     //viewer.setResizeMode(QQuickView::SizeRootObjectToView);
     viewer.show();
 

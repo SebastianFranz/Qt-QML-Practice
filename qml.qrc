@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
+        <file>Pacman.qml</file>
+        <file>Spline.qml</file>
     </qresource>
 </RCC>
