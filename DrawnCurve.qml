@@ -28,9 +28,6 @@ Canvas {
         var AngleNegativeRad = ViewModel.getAngleNegative() * Math.PI / 180
 
         //Calculating the offsets for points where a Radius tangents the line
-        //Half of it has to be added per Radius --> 2 * 1/2 = 1
-        //var OffsetRadiusPositiveX = Math.sin(AnglePositiveRad) * R
-        //var OffsetRadiusNegativeX = Math.sin(AngleNegativeRad) * R
         var OffsetRadiusPositiveX = Math.tan(AnglePositiveRad/2) * R * 2
         var OffsetRadiusNegativeX = Math.tan(AngleNegativeRad/2) * R * 2
 
@@ -53,8 +50,6 @@ Canvas {
             //-PI because the Angle are facing the other direction at the top
             var StartAngleTop = 3/2 * Math.PI - AnglePositiveRad
             var EndAngleTop = 3/2 * Math.PI + AngleNegativeRad
-            console.log("StartAngleTop: " + StartAngleTop * 180 / Math.PI)
-            console.log("EndAngleTop: " + EndAngleTop * 180 / Math.PI)
             context.arc(X + TotalOffset * i + OffsetPositive, R, R, StartAngleTop, EndAngleTop, false)
 
             //to get rid of the last radius, as it has to be special
@@ -63,13 +58,11 @@ Canvas {
 
             var StartAngleBottom = Math.PI/2 + AngleNegativeRad
             var EndAngleBottom =  Math.PI/2 - AnglePositiveRad
-            console.log("StartAngleBottom: " + StartAngleBottom * 180 / Math.PI)
-            console.log("EndAngleBottom: " + EndAngleBottom * 180 / Math.PI)
             context.arc(X + TotalOffset * (i + 1), Y - R, R, StartAngleBottom , EndAngleBottom , true)
         }
 
         var TotalLength = X + TotalOffset * ViewModel.getRepetitions()
-        context.arc(TotalLength , Y - R, R, Math.PI - AngleNegativeRad, Math.PI/2, true)
+        context.arc(TotalLength , Y - R, R, StartAngleBottom, Math.PI/2, true)
 
         TotalLength += ViewModel.getLinearLength() * height
         context.lineTo(TotalLength,Y)
