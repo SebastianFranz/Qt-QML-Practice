@@ -3,7 +3,7 @@ import QtGraphicalEffects 1.0
 
 Rectangle  {
     id:root
-    height: 500
+    height: 30
     width: height
     color: "#00FFFFFF"
 
@@ -13,6 +13,7 @@ Rectangle  {
         anchors.fill: parent
         smooth: true;
         antialiasing: true;
+
 
         property real angleDegreeStart: 30
         property real angleDegree: angleDegreeStart
@@ -27,10 +28,10 @@ Rectangle  {
             //context.clearRect (0, 0, width, height);
             ctx.reset()
 
-            ctx.lineWidth = 20
+            //20 looked nice on 500 height
+            ctx.lineWidth = 20 * (height / 500)
 
             //Translates and scales to account for the LineWidth
-
             var Spacing = ctx.lineWidth/2
             ctx.translate(Spacing,Spacing)
             var ScaleFactor = (height-2*Spacing)/height
@@ -67,8 +68,10 @@ Rectangle  {
             //Constrict everything to the drawn outline
             ctx.clip()
 
+            //30 loooked good at height 500
+            var GradientOffset = 30 * (height / 500)
             //Add a Radial Gradient with a little offset to the upper right, to get a 3D-Effect
-            var gradient=ctx.createRadialGradient(Radius,Radius,0,Radius+30,Radius-30,Radius);
+            var gradient=ctx.createRadialGradient(Radius,Radius,0,Radius + GradientOffset,Radius - GradientOffset,Radius);
             gradient.addColorStop(0.0,"#fcfc00");
             gradient.addColorStop(0.9,"#c4c400");
             gradient.addColorStop(1,"#676700");
@@ -81,6 +84,8 @@ Rectangle  {
             ctx.ellipse(Radius,Radius/4,Radius/4,Radius/4)
             ctx.fillStyle = "black"
             ctx.fill()
+
+
 
         }
         MouseArea{
@@ -99,7 +104,7 @@ Rectangle  {
                 myCanvas.angleDegree += (myCanvas.decreasing ? -1 : 1) * myCanvas.increment
 
 
-                console.log("Angle: " + myCanvas.angleDegree)
+                // console.log("Angle: " + myCanvas.angleDegree)
                 if(myCanvas.angleDegree <= 1.0){
                     myCanvas.decreasing = false
                 }
@@ -107,43 +112,23 @@ Rectangle  {
                     myCanvas.decreasing=true
                 }
                 myCanvas.requestPaint()
+
+
+                //Save the current canvas to a png to create a gif from it
+                //Created an animated Gif at http://gifmaker.me/
+                //Made the Background transparent on the same webpage
+                var Index =  (myCanvas.decreasing ?  myCanvas.angleDegree : myCanvas.angleDegreeStart - myCanvas.angleDegree)
+                Index = (Index < 10 ? "0":"") + Index
+                var FileName = "c:/Pacman" + (myCanvas.decreasing ? 0 : 1) + Index + ".png"
+                if( myCanvas.save(FileName)){
+
+                    console.log("Saved Angle: " + FileName)
+                }
+                else{
+                    console.log("Not saved Angle: " + myCanvas.angleDegree)
+
+                }
             }
         }
-
-        /* NumberAnimation on angleDegree {
-            to: 10
-            duration: 9000
-            running: true
-            on
-        }*/
     }
-    /*
-     Rectangle{
-        id: kreis
-        anchors.fill: parent
-        anchors.margins: 1
-        color: "yellow"
-        radius: height/2
-
-        border.color: black
-        border.width: 1
-
-        RadialGradient {
-            verticalOffset: -50
-            horizontalOffset: 50
-            anchors.fill: parent
-            source: kreis
-            gradient: Gradient {
-                GradientStop {
-                    position: 0.0
-                    color: "#00000000"
-                }
-                GradientStop {
-                    position: 1.0
-                    color: "#FF000000"
-                }
-            }
-        }
-    }*/
 }
-

@@ -7,14 +7,42 @@ QT_CHARTS_USE_NAMESPACE
 Q_DECLARE_METATYPE(QAbstractSeries *)
 Q_DECLARE_METATYPE(QXYSeries *)
 
-int WorkoutViewModel::getBottomStart() const
+
+//TODO Special Interface for Isokinetic and Method5
+
+/**
+ * @brief Defines if the curve starts at the bottom or at the top.
+ * @return
+ */
+int WorkoutViewModel::getStartsAtBottom() const
 {
-    return _BottomStart;
+    return _StartsAtBottom;
 }
 
 WorkoutViewModel::WorkoutViewModel(QObject *parent) : QObject(parent)
 {
     
+}
+
+double WorkoutViewModel::getAnglePositive() const
+{
+    switch (_WorkoutType) {
+    case Method5:
+    case Negative:
+        return 22;
+    default:
+        return 45;
+    }
+}
+
+double WorkoutViewModel::getAngleNegative() const
+{
+    switch (_WorkoutType) {
+    case Negative:
+        return 30;
+    default:
+        return 45;
+    }
 }
 
 
@@ -31,28 +59,10 @@ QList<QPointF> WorkoutViewModel::getSplinePoints()
     QList<QPointF> Temp;
 
     //Angles in relation to the X-Axis for the inclining and declining stretch of the spline
-    double AnglePositive;
-    double AngleNegative;
+    double AnglePositive = getAnglePositive();
+    double AngleNegative = getAngleNegative();
     
-    switch (_WorkoutType) {
-    case Adaptive:
-    case Regular:
-        AnglePositive = 45;
-        AngleNegative = 45;
 
-        break;
-    case Isokinetic:
-    case Method5:
-        //TODO Special Interface
-        return Temp;
-
-        break;
-    case Negativ:
-        AnglePositive = 66;
-        AngleNegative = 33;
-
-        break;
-    }
 
 
     Temp = createPoints(AnglePositive,AngleNegative);
@@ -60,7 +70,7 @@ QList<QPointF> WorkoutViewModel::getSplinePoints()
     //TODO scale
 
     //If it starts at Top mirror it
-    if(!getBottomStart()){
+    if(!getStartsAtBottom()){
         foreach (auto Point, Temp) {
             //As values are only between 0 and 1
             Point.setY(Point.y() + 1);
@@ -194,6 +204,11 @@ QList<QPointF> WorkoutViewModel::createPointsWithTwoRadiuses(double AnglePositiv
     Temp.append(QPointF(getRepetitions() * TotalOffset + getScale(),0));
 
     return Temp;
+}
+
+double WorkoutViewModel::getLinearLength() const
+{
+    return _LinearLength;
 }
 
 double WorkoutViewModel::getScale() const

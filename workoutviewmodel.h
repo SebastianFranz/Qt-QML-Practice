@@ -15,41 +15,49 @@ class WorkoutViewModel : public QObject
 public:
     explicit WorkoutViewModel(QObject *parent = 0);
 
-    enum WorkoutType { Regular, Negativ, Adaptive, Isokinetic, Method5 };
+    enum WorkoutType { Regular, Negative, Adaptive, Isokinetic, Method5 };
+    Q_INVOKABLE double getAnglePositive() const;
+    Q_INVOKABLE double getAngleNegative() const;
+    Q_INVOKABLE double getLinearLength() const;
+    Q_INVOKABLE double getRadius() const;
+    Q_INVOKABLE double getScale() const;
+
+    Q_INVOKABLE int getBigValue() const;
+    Q_INVOKABLE int getRepetitions() const;
+    Q_INVOKABLE int getStartsAtBottom() const;
+
+    Q_INVOKABLE void decreaseWeightBig();
+    Q_INVOKABLE void decreaseWeightSmall();
+    Q_INVOKABLE void increaseWeightBig();
+    Q_INVOKABLE void increaseWeightSmall();
 
     Q_INVOKABLE QList<QPointF> getSplinePoints();
-    Q_INVOKABLE void decreaseWeightSmall();
-    Q_INVOKABLE void decreaseWeightBig();
-    Q_INVOKABLE double getScale() const;
-    Q_INVOKABLE void increaseWeightSmall();
-    Q_INVOKABLE void increaseWeightBig();
+
 
     QList<QPointF> createPoints(double AnglePositive, double AngleNegative);
     QList<QPointF> createPointsWithRadius(double AnglePositive, double AngleNegative);
     QList<QPointF> createPointsWithTwoRadiuses(double AnglePositive, double AngleNegative);
 
-    int getBigValue() const;
-    int getBottomStart() const;
-    double getRadius() const;
-    int getRepetitions() const;
+
 
 
 private:
     int _BigValue = 5;
-    bool _BottomStart = true;
+    double _LinearLength = 1;
     int _Repetitions = 2;
-    double _Radius = 0.1;
+    double _Radius = 0.3;
     double _Scale = 1;
+    bool _StartsAtBottom = true;
 
 
     QHash<WorkoutType,QList<QPointF>> _SplinePoints;
-    WorkoutType _WorkoutType = Negativ;
+    WorkoutType _WorkoutType = Negative;
 
 
 signals:
 
 public slots:
-       void populateSeries(QAbstractSeries *series);
+    void populateSeries(QAbstractSeries *series);
 };
 
 #endif // WORKOUTVIEWMODEL_H

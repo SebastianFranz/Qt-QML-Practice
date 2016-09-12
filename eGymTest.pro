@@ -15,4 +15,5 @@ RESOURCES += *.qrc
 HEADERS += *.h
 
 DISTFILES += \
-    Pacman.qml
+    Pacman.qml \
+    DrawnCurve.qml

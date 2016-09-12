@@ -5,6 +5,13 @@ import QtCharts 2.1
 Item {
     width: 1600
     height: 600
+
+    /**
+      There is still some work left to preserve the continuity of the spline the linear bits can't be integrated so:
+      - the spline with the curve has to be cliped at 0 and the end of the workout
+      - linear bits have to be added, supposedly one or two additional series
+
+      **/
     ChartView {
         id: root
         anchors.fill: parent
@@ -19,6 +26,7 @@ Item {
         clip: {
             spline
         }
+
 
         SplineSeries {
             id:spline
@@ -52,15 +60,6 @@ Item {
                 tickCount:21
 
             }
-            /*  XYPoint { x: -2; y: 1 }
-            XYPoint { x: 0; y: 0 }
-            XYPoint { x: 0.5; y: 1 }
-            XYPoint { x: 2; y: 0 }
-            XYPoint { x: 2.5; y: 1 }*/
-
-
-
-
 
         }
     }
