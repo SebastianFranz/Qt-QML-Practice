@@ -3,5 +3,6 @@
         <file>Pacman.qml</file>
         <file>Spline.qml</file>
         <file>DrawnCurve.qml</file>
+        <file>WorkoutGUI.qml</file>
     </qresource>
 </RCC>

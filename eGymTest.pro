@@ -11,9 +11,11 @@ INCLUDEPATH += $$_PRO_FILE_PWD_
 
 SOURCES += *.cpp
 OTHER_FILES += *.qml
-RESOURCES += *.qrc
+RESOURCES += *.qrc \
+    images.qrc
 HEADERS += *.h
 
 DISTFILES += \
     Pacman.qml \
-    DrawnCurve.qml
+    DrawnCurve.qml \
+    WorkoutGUI.qml

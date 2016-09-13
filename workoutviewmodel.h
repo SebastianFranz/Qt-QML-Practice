@@ -19,6 +19,7 @@ public:
     Q_INVOKABLE double getAnglePositive() const;
     Q_INVOKABLE double getAngleNegative() const;
     Q_INVOKABLE double getLinearLength() const;
+    Q_INVOKABLE double getLineWidth() const;
     Q_INVOKABLE double getRadius() const;
     Q_INVOKABLE double getScale() const;
 
@@ -41,13 +42,15 @@ public:
 
 
 
+
 private:
     int _BigValue = 5;
     double _LinearLength = 1;
+    double _LineWidth = 50;
     int _Repetitions = 2;
     double _Radius = 0.3;
     double _Scale = 1;
-    bool _StartsAtBottom = true;
+    bool _StartsAtBottom = false;
 
 
     QHash<WorkoutType,QList<QPointF>> _SplinePoints;

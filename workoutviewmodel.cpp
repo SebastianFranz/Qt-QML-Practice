@@ -29,7 +29,7 @@ double WorkoutViewModel::getAnglePositive() const
     switch (_WorkoutType) {
     case Method5:
     case Negative:
-        return 22;
+        return 66;
     default:
         return 45;
     }
@@ -39,7 +39,7 @@ double WorkoutViewModel::getAngleNegative() const
 {
     switch (_WorkoutType) {
     case Negative:
-        return 30;
+        return 40;
     default:
         return 45;
     }
@@ -204,6 +204,11 @@ QList<QPointF> WorkoutViewModel::createPointsWithTwoRadiuses(double AnglePositiv
     Temp.append(QPointF(getRepetitions() * TotalOffset + getScale(),0));
 
     return Temp;
+}
+
+double WorkoutViewModel::getLineWidth() const
+{
+    return _LineWidth;
 }
 
 double WorkoutViewModel::getLinearLength() const

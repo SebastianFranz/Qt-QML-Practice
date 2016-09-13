@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>DrawnCurvePrinciple.svg</file>
+        <file>Pacman.gif</file>
+    </qresource>
+</RCC>
