@@ -226,14 +226,10 @@ double WorkoutViewModel::getRadius() const
     return _Radius;
 }
 
-void WorkoutViewModel::decreaseWeightSmall()
-{
-    qDebug() << "Decrease Weight Small";
-}
 
-void WorkoutViewModel::decreaseWeightBig()
+void WorkoutViewModel::decreaseWeight(int Value)
 {
-    qDebug() << "Decrease Weight Big";
+    qDebug() << "Decrease Weight Big by" << Value;
 }
 
 int WorkoutViewModel::getBigValue() const
@@ -257,13 +253,8 @@ void WorkoutViewModel::populateSeries(QAbstractSeries *series)
     }
 }
 
-void WorkoutViewModel::increaseWeightSmall()
+void WorkoutViewModel::increaseWeight(int Value)
 {
-    qDebug() << "Increase Weight Small";
-}
-
-void WorkoutViewModel::increaseWeightBig()
-{
-    qDebug() << "Increase Weight Big";
+    qDebug() << "Increase Weight Big by" << Value;
 }
 

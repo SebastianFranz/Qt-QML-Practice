@@ -18,4 +18,5 @@ HEADERS += *.h
 DISTFILES += \
     Pacman.qml \
     DrawnCurve.qml \
-    WorkoutGUI.qml
+    WorkoutGUI.qml \
+    Glossy.qml

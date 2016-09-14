@@ -27,10 +27,8 @@ public:
     Q_INVOKABLE int getRepetitions() const;
     Q_INVOKABLE int getStartsAtBottom() const;
 
-    Q_INVOKABLE void decreaseWeightBig();
-    Q_INVOKABLE void decreaseWeightSmall();
-    Q_INVOKABLE void increaseWeightBig();
-    Q_INVOKABLE void increaseWeightSmall();
+    Q_INVOKABLE void decreaseWeight(int Value);
+    Q_INVOKABLE void increaseWeight(int Value);
 
     Q_INVOKABLE QList<QPointF> getSplinePoints();
 
@@ -44,7 +42,7 @@ public:
 
 
 private:
-    int _BigValue = 5;
+    int _BigValue = 3;
     double _LinearLength = 1;
     double _LineWidth = 50;
     int _Repetitions = 2;

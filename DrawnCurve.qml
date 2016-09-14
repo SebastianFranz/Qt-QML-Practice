@@ -28,16 +28,14 @@ Canvas {
         var YCenterRect = Rectangle.y - Rectangle.width/2
         var MaximalCollisionDistance = Math.pow(Rectangle.width/2 + dots[0].radius,2)
 
-        //console.log("RectangleX: " + XCenterRect + " RectangleY: " + YCenterRect);
-
 
         for (var i = 0; i < dots.length; ++i) {
             var Dot = dots[i]
-            var XCenter = myCanvas.parent.mapFromItem(myCanvas,Dot.x,Dot.y).x - Dot.radius
-            var YCenter = myCanvas.parent.mapFromItem(myCanvas,Dot.x,Dot.y).y - Dot.radius
+            var XCenter = Rectangle.parent.mapFromItem(myCanvas,Dot.x,Dot.y).x - Dot.radius
+            var YCenter = Rectangle.parent.mapFromItem(myCanvas,Dot.x,Dot.y).y - Dot.radius
 
             //console.log("DotX: " + Dot.x + " DotY: " + Dot.y);
-            //console.log("DotX: " + XCenter + " DotY: " + YCenter);
+            //console.log("XCenter: " + XCenter + " YCenter: " + YCenter);
 
 
             var DistanceOfCenters = Math.pow(XCenterRect - XCenter,2) + Math.pow(YCenterRect - YCenter,2)
@@ -47,9 +45,13 @@ Canvas {
                 //console.log("Collision detected!!!!");
 
                 if(collidedDots.length == 0 || collidedDots[collidedDots.length - 1] != Dot){
-                    //console.log("Dot added. DotCount: " + collidedDots.length);
+                    /*console.log("Dot added. DotCount: " + collidedDots.length);
+                    console.log("DotX: " + Dot.x + " DotY: " + Dot.y);
+                    console.log("XCenter: " + XCenter + " YCenter: " + YCenter);
+                    console.log("DistanceOfCenters: " + Math.sqrt(DistanceOfCenters) + " MaximalCollisionDistance: " + Math.sqrt(MaximalCollisionDistance) );
+                    console.log("RectangleX: " + XCenterRect + " RectangleY: " + YCenterRect);*/
 
-                    collidedDots[collidedDots.length] = Dot
+                    collidedDots.push(Dot)
                     Dot.color = "#0dff3a"
                 }
 
@@ -149,8 +151,8 @@ Canvas {
 
 
         //Darw the Path-Dots
-        context.fillStyle = "Gold"
-        context.beginPath()
+        //context.fillStyle = "red"
+        //context.beginPath()
 
         //Diameter of the ellipse
         var D = ViewModel.getLineWidth()/2
@@ -175,27 +177,27 @@ Canvas {
 
 
 
-            dots[dots.length] = (Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' +(X + TotalOffset * i + D/2)*ScaleFactorX +
+            dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' +(X + TotalOffset * i + D/2)*ScaleFactorX +
                                            '; y: ' + (Y1 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                            '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
-            dots[dots.length] = (Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * i + OffsetPositive/2 + D/2)*ScaleFactorX +
+            dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * i + OffsetPositive/2 + D/2)*ScaleFactorX +
                                            '; y: ' + ((Y1 + Y2)/2 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                            '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
-            dots[dots.length] = (Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * i + OffsetPositive + D/2)*ScaleFactorX +
+            dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * i + OffsetPositive + D/2)*ScaleFactorX +
                                            '; y: ' + (Y2 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                            '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
-            dots[dots.length] = (Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * (i+1) - OffsetNegative/2 + D/2)*ScaleFactorX +
+            dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * (i+1) - OffsetNegative/2 + D/2)*ScaleFactorX +
                                            '; y: ' + ((Y1 + Y2)/2 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                            '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
 
 
         }
         // context.ellipse(X + TotalOffset * ViewModel.getRepetitions() - OffsetRadiusPositiveX/2 - D/2, Y1 - + OffsetRadiusPositiveY / 2 + (ViewModel.getLineWidth() - D) / 2, D, -D)
-        context.ellipse(X + TotalOffset * i - D/2, Y1 + D/2, D, -D)
-        dots[dots.length] = (Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * i + D/2)*ScaleFactorX +
+       // context.ellipse(X + TotalOffset * i - D/2, Y1 + D/2, D, -D)
+        dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * i + D/2)*ScaleFactorX +
                                        '; y: ' + (Y1 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                        '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
-        context.fill()
+        //context.fill()
 
     }
 }

@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>DrawnCurvePrinciple.svg</file>
         <file>Pacman.gif</file>
+        <file>bubble.png</file>
     </qresource>
 </RCC>
