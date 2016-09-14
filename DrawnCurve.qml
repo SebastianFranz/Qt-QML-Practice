@@ -7,11 +7,9 @@ Canvas {
     antialiasing: true
     smooth: true
 
-    property list<Rectangle> collidedDots
+    property variant collidedDots:[]
+    property variant dots:[]
 
-    VisualItemModel {
-        id:dots
-    }
 
     MouseArea {
         anchors.fill: parent
@@ -28,13 +26,13 @@ Canvas {
         //Distance of the Centers has to be lower than combined radiuses
         var XCenterRect = Rectangle.x - Rectangle.width/2
         var YCenterRect = Rectangle.y - Rectangle.width/2
-        var MaximalCollisionDistance = Math.pow(Rectangle.width/2 + dots.children[0].radius,2)
+        var MaximalCollisionDistance = Math.pow(Rectangle.width/2 + dots[0].radius,2)
 
         //console.log("RectangleX: " + XCenterRect + " RectangleY: " + YCenterRect);
 
 
-        for (var i = 0; i < dots.children.length; ++i) {
-            var Dot = dots.children[i]
+        for (var i = 0; i < dots.length; ++i) {
+            var Dot = dots[i]
             var XCenter = myCanvas.parent.mapFromItem(myCanvas,Dot.x,Dot.y).x - Dot.radius
             var YCenter = myCanvas.parent.mapFromItem(myCanvas,Dot.x,Dot.y).y - Dot.radius
 
@@ -48,8 +46,8 @@ Canvas {
             if(DistanceOfCenters < MaximalCollisionDistance){
                 //console.log("Collision detected!!!!");
 
-                if(collidedDots.length != 0 || collidedDots[collidedDots.length - 1] != Dot){
-                    //console.log("Dot added");
+                if(collidedDots.length == 0 || collidedDots[collidedDots.length - 1] != Dot){
+                    //console.log("Dot added. DotCount: " + collidedDots.length);
 
                     collidedDots[collidedDots.length] = Dot
                     Dot.color = "#0dff3a"
@@ -177,16 +175,16 @@ Canvas {
 
 
 
-            dots.append(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' +(X + TotalOffset * i + D/2)*ScaleFactorX +
+            dots[dots.length] = (Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' +(X + TotalOffset * i + D/2)*ScaleFactorX +
                                            '; y: ' + (Y1 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                            '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
-            dots.append(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * i + OffsetPositive/2 + D/2)*ScaleFactorX +
+            dots[dots.length] = (Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * i + OffsetPositive/2 + D/2)*ScaleFactorX +
                                            '; y: ' + ((Y1 + Y2)/2 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                            '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
-            dots.append(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * i + OffsetPositive + D/2)*ScaleFactorX +
+            dots[dots.length] = (Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * i + OffsetPositive + D/2)*ScaleFactorX +
                                            '; y: ' + (Y2 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                            '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
-            dots.append(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * (i+1) - OffsetNegative/2 + D/2)*ScaleFactorX +
+            dots[dots.length] = (Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * (i+1) - OffsetNegative/2 + D/2)*ScaleFactorX +
                                            '; y: ' + ((Y1 + Y2)/2 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                            '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
 
@@ -194,7 +192,7 @@ Canvas {
         }
         // context.ellipse(X + TotalOffset * ViewModel.getRepetitions() - OffsetRadiusPositiveX/2 - D/2, Y1 - + OffsetRadiusPositiveY / 2 + (ViewModel.getLineWidth() - D) / 2, D, -D)
         context.ellipse(X + TotalOffset * i - D/2, Y1 + D/2, D, -D)
-        dots.append(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * i + D/2)*ScaleFactorX +
+        dots[dots.length] = (Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * i + D/2)*ScaleFactorX +
                                        '; y: ' + (Y1 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                        '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
         context.fill()
