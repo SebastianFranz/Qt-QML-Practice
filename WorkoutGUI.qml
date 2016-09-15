@@ -9,13 +9,86 @@ Item {
     height: 480
     width: 800
 
+    Button{
+        id:buttonLogout2
+        style: buttonStyle22
+        anchors.right: parent.right
+        text: "Logout"
+        Layout.preferredHeight: 200
+        Layout.preferredWidth: 500
+        height: 200
+        width: 500
+}
 
-    /*Rectangle{
-   height: 100
-   width: 100
-   color: "black"
-   Glossy{}
-  }*/
+    Component{
+        id: buttonStyle22
+        ButtonStyle {
+            property color backgroundColor: "black"  //was "#00c0f5"
+            property color textColor: "gold" //was "#ddd"
+            property color textColorHover: "#ddd" //was "white"
+
+            background: Item {
+                Canvas {
+                    opacity: !control.pressed ? 1 : 0.75
+                    anchors.fill: parent
+
+                    onPaint: {
+                        var ctx = getContext("2d");
+                        ctx.reset();
+
+                        ctx.beginPath();
+                        ctx.lineWidth = height * 0.1;
+                        ctx.roundedRect(ctx.lineWidth / 2, ctx.lineWidth / 2,
+                                        width - ctx.lineWidth, height - ctx.lineWidth, control.radius, control.radius);
+                        ctx.strokeStyle = "grey";
+                        ctx.stroke();
+                        ctx.fillStyle = backgroundColor;
+                        ctx.fill();
+                    }
+                }
+
+                Label {
+                    text: control.text
+                    color: control.hovered && !control.pressed ? textColorHover : textColor
+                    font.pixelSize: control.height * 0.5
+                    anchors.centerIn: parent
+                }
+
+                Canvas {
+                    anchors.fill: parent
+                    onPaint: {
+                        var ctx = getContext("2d");
+                        ctx.reset();
+
+                        ctx.beginPath();
+                        ctx.lineWidth = height * 0.1;
+                        ctx.roundedRect(ctx.lineWidth / 2, ctx.lineWidth / 2,
+                                        width - ctx.lineWidth, height - ctx.lineWidth, control.radius, control.radius);
+                        ctx.moveTo(0, height * 0.4);
+                        ctx.bezierCurveTo(width * 0.25, height * 0.6, width * 0.75, height * 0.6, width, height * 0.4);
+                        ctx.lineTo(width, height);
+                        ctx.lineTo(0, height);
+                        ctx.lineTo(0, height * 0.4);
+                        ctx.clip();
+
+                        ctx.beginPath();
+                        ctx.roundedRect(ctx.lineWidth / 2, ctx.lineWidth / 2,
+                                        width - ctx.lineWidth, height - ctx.lineWidth,
+                                        control.radius, control.radius);
+                        var gradient = ctx.createLinearGradient(0, 0, 0, height);
+                        gradient.addColorStop(0, "#bbffffff");
+                        gradient.addColorStop(0.6, "#00ffffff");
+                        ctx.fillStyle = gradient;
+                        ctx.fill();
+                    }
+                }
+            }
+
+            label: null
+        }
+    }
+
+
     Text{
         id: result
         anchors.horizontalCenter: parent.horizontalCenter
@@ -23,14 +96,16 @@ Item {
         visible: false
     }
 
-    ColumnLayout{
-        anchors.fill: parent
-        anchors.margins: 20
 
-        Row{
+
+        Column{
+            visible:  false
+
+            anchors.fill: parent
+        Item{
             anchors.left: parent.left
-            anchors.top: parent.top
             anchors.right: parent.right
+            height: 50
 
             Text{
                 id:workoutGoal
@@ -42,10 +117,14 @@ Item {
             }
             Button{
                 id:buttonLogout
+                style: buttonStyle
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
                 text: "Logout"
-                Glossy{}
+                Layout.preferredHeight: 20
+                Layout.preferredWidth: 50
+                height: 20
+                width: 50
 
             }
             Text{
@@ -65,7 +144,7 @@ Item {
         Text{
             id:workoutType
             text: "WorkoutType"
-            Layout.topMargin: 50
+           // Layout.topMargin: 50
         }
         Rectangle{
             id:seperator
@@ -278,45 +357,191 @@ Item {
             }
         }
 
+        RowLayout{
 
-        Button{
-            anchors.horizontalCenter: parent.horizontalCenter
             height: 100
-            width : 100
-            text:  "Start / Stop"
-            //style: buttonStyle1
-            onClicked:
-            {
-                animation.running = !animation.running
-                timerCollision.running = !timerCollision.running
+            Button{
+
+                height: 100
+                anchors.fill: parent
+                //anchors.horizontalCenter: parent.horizontalCenter
+                text:  "Start / Stop"
+                style: buttonStyle
+                onClicked:
+                {
+                    animation.running = !animation.running
+                    timerCollision.running = !timerCollision.running
+                }
+            }
+
+        }
+
+        Component {
+            id: buttonStyle3
+            ButtonStyle {
+
+                background: Rectangle {
+                    implicitHeight: 220
+                    implicitWidth: window.width / columnFactor
+                    color: control.pressed ? "darkGray" : control.activeFocus ? "#cdd" : "#ccc"
+                    antialiasing: true
+                    border.color: "gray"
+                    radius: height/2
+                    Rectangle {
+                        anchors.fill: parent
+                        anchors.margins: 1
+                        color: "transparent"
+                        antialiasing: true
+                        visible: !control.pressed
+                        border.color: "#aaffffff"
+                        radius: height/2
+                    }
+                }
             }
         }
-    }
+        Component {
+            id: buttonStyle1
+            ButtonStyle {
+                background: Item {
+                    Canvas {
+                        anchors.fill: parent
 
+                        onPaint: {
+                            var ctx = getContext("2d");
+                            ctx.reset();
 
-    Component {
-        id: buttonStyle1
-        ButtonStyle {
+                            ctx.beginPath();
+                            ctx.lineWidth = height * 0.1;
+                            ctx.roundedRect(ctx.lineWidth / 2, ctx.lineWidth / 2,
+                                            width - ctx.lineWidth, height - ctx.lineWidth, control.radius, control.radius);
+                            ctx.strokeStyle = "grey";
+                            ctx.stroke();
+                            ctx.fillStyle = "#00c0f5";
+                            ctx.fill();
+                        }
+                    }
 
-            background:
-                /*  Rectangle {
-                implicitHeight: 22
-                implicitWidth: window.width / columnFactor
-                color: control.pressed ? "darkGray" : control.activeFocus ? "#cdd" : "#ccc"
-                antialiasing: true
-                border.color: "gray"
-                radius: height/4
-                Rectangle {
-                    anchors.fill: parent
-                    anchors.margins: 1
-                    color: "transparent"
-                    antialiasing: true
-                    visible: !control.pressed
-                    border.color: "#aaffffff"
-                    radius: height/2
+                    Label {
+                        text: control.text
+                        color: "#ddd"
+                        font.pixelSize: control.height * 0.5
+                        anchors.centerIn: parent
+                    }
+
+                    Canvas {
+                        anchors.fill: parent
+                        onPaint: {
+                            var ctx = getContext("2d");
+                            ctx.reset();
+
+                            ctx.beginPath();
+                            ctx.lineWidth = height * 0.1;
+                            ctx.roundedRect(ctx.lineWidth / 2, ctx.lineWidth / 2,
+                                            width - ctx.lineWidth, height - ctx.lineWidth, control.radius, control.radius);
+                            ctx.moveTo(0, height * 0.4);
+                            ctx.bezierCurveTo(width * 0.25, height * 0.6, width * 0.75, height * 0.6, width, height * 0.4);
+                            ctx.lineTo(width, height);
+                            ctx.lineTo(0, height);
+                            ctx.lineTo(0, height * 0.4);
+                            ctx.clip();
+
+                            ctx.beginPath();
+                            ctx.roundedRect(ctx.lineWidth / 2, ctx.lineWidth / 2,
+                                            width - ctx.lineWidth, height - ctx.lineWidth,
+                                            control.radius, control.radius);
+                            var gradient = ctx.createLinearGradient(0, 0, 0, height);
+                            gradient.addColorStop(0, "#bbffffff");
+                            gradient.addColorStop(0.6, "#00ffffff");
+                            ctx.fillStyle = gradient;
+                            ctx.fill();
+                        }
+                    }
                 }
-            }*/
-                Rectangle {
+
+                label: null
+            }
+        }
+
+
+        Component {
+            id: buttonStyle2
+            ButtonStyle {
+
+                background:
+                    Rectangle {
+                    id: button12
+                    anchors.centerIn: parent
+                    signal clicked
+                    property alias text: btnText.text
+
+                    // height: 500
+                    //radius: 10
+                    //border.color:"#6a6363"
+                    smooth: true
+                    border.color: "#22FFFFFF"
+
+                    gradient: off
+
+                    Gradient {
+                        id:off
+                        /*  GradientStop { position: 0.0; color: "lightsteelblue" }
+                                   GradientStop { position: 0.5; color: "lightsteelblue" }
+                                   GradientStop { position: 0.5; color: "black" }
+                                   GradientStop { position: 1.0; color: "black" }*/
+
+
+                        GradientStop { position: 0;    color: "#88FFFF" }
+                        GradientStop { position: .1;   color: "#55FFFF" }
+                        GradientStop { position: .5;   color: "#33FFFF" }
+                        GradientStop { position: .501; color: "#110000" }
+                        GradientStop { position: .8;   color: "#11FFFF" }
+                        GradientStop { position: 1;    color: "#55FFFF" }
+                    }
+
+
+                    Gradient {
+                        id:onn
+                        GradientStop { position: 0.0; color: "steelblue" }
+                        GradientStop { position: 0.5; color: "steelblue" }
+                        GradientStop { position: 0.5; color: "black" }
+                        GradientStop { position: 1.0; color: "black" }
+                    }
+
+                    Text {
+                        id:btnText
+                        anchors.centerIn:parent
+                        color:"white"
+                        //text: "text"
+                    }
+
+                    MouseArea {
+                        id: mouseArea
+                        anchors.fill: parent
+                        onClicked:  {
+                            button.clicked();
+
+                            console.log("clicked")
+                        }
+
+                        onEntered:{
+                            button.gradient=onn
+                            border.color= "steelblue"
+                            console.log("entered")
+                        }
+
+                        onCanceled:{
+                            border.color= "#6a6363"
+                            button.gradient=off
+                        }
+
+                        onExited: {
+                            border.color= "#6a6363"
+                            button.gradient=off
+                        }
+
+                    }
+                }
+                /*Rectangle {
                 height: 500
                 width : 500
                 color: "green"
@@ -343,9 +568,9 @@ Item {
                         GradientStop { position: 1;    color: "#55FFFFFF" }
                     }
                 }
-            }
+            }*/
 
-            /*     Rectangle {
+                /*     Rectangle {
                 id: button12
                 signal clicked
                 property alias text: btnText.text
@@ -404,10 +629,84 @@ Item {
                 }
 
             }*/
+            }
         }
     }
 
 
 
+
+    Component{
+        //Thanks to:
+        //http://stackoverflow.com/questions/25462162/creating-a-scalable-glossy-shiny-button-with-qt-quick
+
+        id: buttonStyle
+        ButtonStyle {
+            property color backgroundColor: "black"  //was "#00c0f5"
+            property color textColor: "gold" //was "#ddd"
+            property color textColorHover: "#ddd" //was "white"
+
+            background: Item {
+                Canvas {
+                    opacity: !control.pressed ? 1 : 0.75
+                    anchors.fill: parent
+
+                    onPaint: {
+                        var ctx = getContext("2d");
+                        ctx.reset();
+
+                        ctx.beginPath();
+                        ctx.lineWidth = height * 0.1;
+                        ctx.roundedRect(ctx.lineWidth / 2, ctx.lineWidth / 2,
+                                        width - ctx.lineWidth, height - ctx.lineWidth, control.radius, control.radius);
+                        ctx.strokeStyle = "grey";
+                        ctx.stroke();
+                        ctx.fillStyle = backgroundColor;
+                        ctx.fill();
+                    }
+                }
+
+                Label {
+                    text: control.text
+                    color: control.hovered && !control.pressed ? textColorHover : textColor
+                    font.pixelSize: control.height * 0.5
+                    anchors.centerIn: parent
+                }
+
+                Canvas {
+                    anchors.fill: parent
+                    onPaint: {
+                        var ctx = getContext("2d");
+                        ctx.reset();
+
+                        ctx.beginPath();
+                        ctx.lineWidth = height * 0.1;
+                        ctx.roundedRect(ctx.lineWidth / 2, ctx.lineWidth / 2,
+                                        width - ctx.lineWidth, height - ctx.lineWidth, control.radius, control.radius);
+                        ctx.moveTo(0, height * 0.4);
+                        ctx.bezierCurveTo(width * 0.25, height * 0.6, width * 0.75, height * 0.6, width, height * 0.4);
+                        ctx.lineTo(width, height);
+                        ctx.lineTo(0, height);
+                        ctx.lineTo(0, height * 0.4);
+                        ctx.clip();
+
+                        ctx.beginPath();
+                        ctx.roundedRect(ctx.lineWidth / 2, ctx.lineWidth / 2,
+                                        width - ctx.lineWidth, height - ctx.lineWidth,
+                                        control.radius, control.radius);
+                        var gradient = ctx.createLinearGradient(0, 0, 0, height);
+                        gradient.addColorStop(0, "#bbffffff");
+                        gradient.addColorStop(0.6, "#00ffffff");
+                        ctx.fillStyle = gradient;
+                        ctx.fill();
+                    }
+                }
+            }
+
+            label: null
+        }
+    }
 }
+
+
 
