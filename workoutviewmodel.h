@@ -42,8 +42,8 @@ public:
 
 
 private:
-    int _BigValue = 3;
-    double _LinearLength = 1;
+    int _BigValue = 5;
+    double _LinearLength = 2;
     double _LineWidth = 50;
     int _Repetitions = 2;
     double _Radius = 0.3;

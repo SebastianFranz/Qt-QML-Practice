@@ -6,7 +6,7 @@ import QtQuick.Controls.Styles 1.2
 
 Rectangle {
     id: root
-    height: 480
+    height: 600
     width: 800
     color: backgroundColor
 
@@ -21,8 +21,12 @@ Rectangle {
     property color colorSeperator: "#e8e064"
     property color colorStar: "#e9d86c"
 
-    property string fontFamily: "Ubuntu"
+    property string fontFamily: "Calibri"
     property color fontColor: "white"
+
+    property int competedRepetitions: 0
+    property real progress: 0
+
 
 
 
@@ -35,60 +39,62 @@ Rectangle {
 
 
 
-    Column{
+  /*  Column{
         spacing: 10
-        anchors.fill: parent
+        anchors.fill: parent*/
 
         Item{
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 10
-            height: 50
+            height: 95
 
             Text{
                 id:workoutGoal
-                font.pixelSize: 28
+                font.pixelSize: 70
                 font.family: fontFamily
                 color: fontColor
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 anchors.verticalCenterOffset: 5
-                text: "<b><i>" + "WorkoutGoal" + "</i></b>"
+                text: "<i>" + "Athletik_" + "</i>"
             }
             Button{
                 id:buttonLogout
                 style: buttonStyle
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.top: parent.top
                 anchors.right: parent.right
-                text: "Logout"
-                Layout.preferredHeight: 20
-                Layout.preferredWidth: 50
-                height: 20
-                width: 50
-
+                anchors.topMargin: 10
+                text: "Abmelden"
+                height: 50
+                width: 150
             }
             Text{
                 id:userName
                 font.family: fontFamily
                 color: fontColor
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenter: buttonLogout.verticalCenter
                 anchors.right: buttonLogout.left
                 anchors.margins: 10
-                text: "<i>" + "Name" + "</i>"
+                text: "<i>" + "Toni_" + "</i>"
+                font.pixelSize: 25
             }
             Image{
                 id:userImage
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenter: buttonLogout.verticalCenter
                 anchors.right: userName.left
                 anchors.margins: 10
+                height: userName.height
+                width: height
             }
         }
 
         Rectangle{
+            id:separatingElement
             anchors.left: parent.left
             anchors.right: parent.right
-            height: 20
+            height: 45
             color: backgroundColorGraph
 
             Text{
@@ -97,17 +103,17 @@ Rectangle {
                 anchors.left: parent.left
 
                 anchors.margins: 10
-                text: "<b>" + "WorkoutType" + "</b>"
+                text: "<b>" + "Du trainierst: " + "Negativ_" + "</b>"
                 font.family: fontFamily
                 color: fontColor
-                font.pixelSize: 10
+                font.pixelSize: 20
             }
             Rectangle{
-                id:seperator
+                id:separator
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
-                height: 2
+                height: 3
                 color: colorSeperator
             }
         }
@@ -117,10 +123,10 @@ Rectangle {
             anchors.right: parent.right
             anchors.left: parent.left
             spacing: 30
+            height: 320
 
             Slider{
-                // anchors.bottom: parent.bottom
-                // anchors.left: parent.left
+                id: slider
                 orientation: Qt.Vertical
                 height: curve.height
 
@@ -137,14 +143,17 @@ Rectangle {
             Rectangle{
                 id:curveBorder
                 border.color: "black"
-                border.width: 2
+                border.width: 1
                 color: backgroundColorGraph
                 radius: 10
-                Layout.fillWidth: true
-                //width: 300
-                //anchors.left: parent.left
+                anchors.left: slider.right
+                anchors.right: weightAdjustments.left
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                anchors.topMargin: 55
+                anchors.bottomMargin: 55
+                anchors.rightMargin: 40
+                anchors.leftMargin: 20
                 clip: true
 
                 DrawnCurve {
@@ -264,43 +273,45 @@ Rectangle {
             }
 
 
-            ColumnLayout{
+            Column{
                 id: weightAdjustments
-                //anchors.right: parent.right
-                width: 200
                 spacing: 5
-
-
+                property int contentWidth: 140
+                property int contentHeigth: 40
+                anchors.right: parent.right
+                anchors.rightMargin: 40
 
                 Button{
                     style: buttonStyle
                     text: "<b>+ " + ViewModel.getBigValue() + "</b>"
-                    Layout.preferredHeight: 35
-                    Layout.preferredWidth: 80
+                    height:  parent.contentHeigth
+                    width: parent.contentWidth
                     onClicked: ViewModel.increaseWeight(ViewModel.getBigValue())
                 }
                 Button{
                     style: buttonStyle
                     text: "<b>+"
-                    Layout.preferredHeight: 35
-                    Layout.preferredWidth: 80
+                    height:  parent.contentHeigth
+                    width: parent.contentWidth
                     onClicked: ViewModel.increaseWeight(1)
                 }
                 Rectangle{
                     border.color: backgroundColorGraph
                     border.width: 2
                     radius: height/5
-                    Layout.preferredHeight: 40
-                    Layout.preferredWidth: 80
+                    height:  parent.contentHeigth
+                    width: parent.contentWidth
                     anchors.horizontalCenter: parent.horizontalCenter
                     color: backgroundColor
 
                     Text{
                         id: textWeight1
                         anchors.centerIn: parent
-                        text: "Weight 1"
+                        text: "34 kg_"
+                        font.bold:  true
                         font.family: fontFamily
                         color: fontColor
+                        font.pixelSize: 20
                     }
                 }
 
@@ -308,38 +319,38 @@ Rectangle {
                     border.color: backgroundColorGraph
                     border.width: 1
                     radius: height/5
-                    Layout.preferredHeight: 40
-                    Layout.preferredWidth: 80
+                    height:  parent.contentHeigth
+                    width: parent.contentWidth
                     color: backgroundColor
 
                     Text{
                         id: textWeight2
                         anchors.centerIn: parent
-                        text: "Weight 2"
+                        text: "51 kg_"
                         font.family: fontFamily
                         color: fontColor
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        font.pixelSize: 20
                     }
                 }
                 Button{
                     style: buttonStyle
                     text: "<b>-</b>"
-                    Layout.preferredHeight: 35
-                    Layout.preferredWidth: 80
+                    height:  parent.contentHeigth
+                    width: parent.contentWidth
                     onClicked: ViewModel.decreaseWeight(1)
                 }
                 Button{
                     style: buttonStyle
                     text: "<b>- " + ViewModel.getBigValue() + "</b>"
-                    Layout.preferredHeight: 35
-                    Layout.preferredWidth: 80
+                    height:  parent.contentHeigth
+                    width: parent.contentWidth
                     onClicked: ViewModel.decreaseWeight(ViewModel.getBigValue())
                 }
             }
         }
         Rectangle{
             color: colorButtons
-            height: 25
+            height: 40
             anchors.right: parent.right
             anchors.left: parent.left
             Rectangle{
@@ -347,13 +358,15 @@ Rectangle {
                 color: colorState
                 anchors.bottom: parent.bottom
                 anchors.top: parent.top
-                width: 100
+                width: 150
                 Text{
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
+                    anchors.leftMargin: 20
+                    font.family: fontFamily
                     color: fontColor
-                    text: "State"
+                    text: "Training"
+                    font.pixelSize: parent.height * 0.6
                 }
             }
             ProgressBar{
@@ -362,45 +375,66 @@ Rectangle {
                 anchors.top: parent.top
                 anchors.left: state.right
                 anchors.right: repetitions.left
-                anchors.leftMargin: 5
-                anchors.rightMargin: 5
+                anchors.leftMargin: 3
                 value: 0.6
 
+                style:
+                    ProgressBarStyle {
+                    background: Rectangle {
+                        color:colorButtons
+                    }
+                    progress: Rectangle {
+                        color:  colorProgress
+                    }
+
+                }
+                Text {
+                    id: progressElapsedText
+                    anchors{
+                        verticalCenter: parent.verticalCenter
+                        left: parent.left
+                        leftMargin: 10
+                    }
+                    font.family: fontFamily
+                    color: fontColor
+                    text: "<b>" + Math.round(progressBar.value * 100) + "</b> %"
+                    font.pixelSize: parent.height * 0.6
+                }
             }
             Rectangle{
                 id: repetitions
                 anchors.bottom: parent.bottom
                 anchors.top: parent.top
                 anchors.right: parent.right
-                width: 50
-                color: "transparent"
+                width: 80
+                color: backgroundColor
                 Text{
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
-                    anchors.rightMargin: 10
+                    anchors.rightMargin: 20
+                    font.family: fontFamily
                     color: fontColor
-                    text: "Repetition Progression"
+                    font.pixelSize: parent.height * 0.6
+                    text: "<b>" + competedRepetitions + "</b> / " + ViewModel.getRepetitions()
                 }
             }
         }
 
-        Item {
-            anchors.right: parent.right
-            anchors.left: parent.left
-            height: 80
-        Button{
-            height: 40
-            width: root.width/3
 
-            anchors.centerIn: parent
-            text:  "Start / Stop"
-            style: buttonStyle
-            onClicked:
-            {
-                animation.running = !animation.running
-                timerCollision.running = !timerCollision.running
+            Button{
+                anchors.horizontalCenter: parent.horizontalCenter
+                height: 60
+                width: root.width/3
+
+                text: (!animation.running ? "Übung beginnen" : "Übung beenden")
+                style: buttonStyle
+                onClicked:
+                {
+                    animation.running = !animation.running
+                    timerCollision.running = !timerCollision.running
+
+
             }
-        }
         }
 
 
@@ -476,7 +510,7 @@ Rectangle {
             }
         }
     }
-}
+//}
 
 
 
