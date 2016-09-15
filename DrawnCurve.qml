@@ -7,6 +7,10 @@ Canvas {
     antialiasing: true
     smooth: true
 
+    property color pathColor: "black"
+    property color dotColor: "gold"
+    property color collidedDotColor: "#0dff3a"
+
     property variant collidedDots:[]
     property variant dots:[]
 
@@ -48,13 +52,11 @@ Canvas {
                     //console.log("Dot added. DotCount: " + collidedDots.length);
 
                     collidedDots.push(Dot)
-                    Dot.color = "#0dff3a"
+                    Dot.color = collidedDotColor
                 }
 
                 return true;
             }
-
-            //console.log(dots.children[i].color = "#82ea12");
         }
     }
 
@@ -64,7 +66,7 @@ Canvas {
         var context = getContext("2d")
 
         context.lineWidth = ViewModel.getLineWidth()
-        context.strokeStyle = "black"
+        context.strokeStyle = pathColor
         context.lineCap = "round"
 
 
@@ -159,7 +161,7 @@ Canvas {
         //Don't ask my why this is necessary ....
         //Makes me a bit sick ... but works perfectly - non the less WTF!!!!
         var ScaleFactorX = ScaleFactor-0.018*(2040/TotalLength)
-        var DotColor = "Gold"
+
 
         for(var i = 0; i < ViewModel.getRepetitions(); i++){
             //Not sure which ones I like best, so I leave them in there
@@ -173,16 +175,16 @@ Canvas {
 
 
 
-            dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' +(X + TotalOffset * i + D/2)*ScaleFactorX +
+            dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + dotColor + '"; x: ' +(X + TotalOffset * i + D/2)*ScaleFactorX +
                                          '; y: ' + (Y1 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                          '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
-            dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * i + OffsetPositive/2 + D/2)*ScaleFactorX +
+            dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + dotColor + '"; x: ' + (X + TotalOffset * i + OffsetPositive/2 + D/2)*ScaleFactorX +
                                          '; y: ' + ((Y1 + Y2)/2 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                          '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
-            dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * i + OffsetPositive + D/2)*ScaleFactorX +
+            dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + dotColor + '"; x: ' + (X + TotalOffset * i + OffsetPositive + D/2)*ScaleFactorX +
                                          '; y: ' + (Y2 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                          '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
-            dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * (i+1) - OffsetNegative/2 + D/2)*ScaleFactorX +
+            dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + dotColor + '"; x: ' + (X + TotalOffset * (i+1) - OffsetNegative/2 + D/2)*ScaleFactorX +
                                          '; y: ' + ((Y1 + Y2)/2 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                          '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
 
@@ -190,7 +192,7 @@ Canvas {
         }
         // context.ellipse(X + TotalOffset * ViewModel.getRepetitions() - OffsetRadiusPositiveX/2 - D/2, Y1 - + OffsetRadiusPositiveY / 2 + (ViewModel.getLineWidth() - D) / 2, D, -D)
         // context.ellipse(X + TotalOffset * i - D/2, Y1 + D/2, D, -D)
-        dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + DotColor + '"; x: ' + (X + TotalOffset * i + D/2)*ScaleFactorX +
+        dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + dotColor + '"; x: ' + (X + TotalOffset * i + D/2)*ScaleFactorX +
                                      '; y: ' + (Y1 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                      '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
         //context.fill()

@@ -4,7 +4,5 @@
         <file>Spline.qml</file>
         <file>DrawnCurve.qml</file>
         <file>WorkoutGUI.qml</file>
-        <file>Glossy.qml</file>
-        <file>Button.qml</file>
     </qresource>
 </RCC>
