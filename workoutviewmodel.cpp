@@ -46,8 +46,9 @@ double WorkoutViewModel::getAngleNegative() const
 }
 
 
+
 /**
- * @brief WorkoutViewModel::getSplinePoints
+ * @brief deprecated
  * @return
  */
 QList<QPointF> WorkoutViewModel::getSplinePoints()
@@ -81,6 +82,13 @@ QList<QPointF> WorkoutViewModel::getSplinePoints()
     return Temp;
 }
 
+
+/**
+ * @brief deprecated
+ * @param AnglePositive
+ * @param AngleNegative
+ * @return
+ */
 QList<QPointF> WorkoutViewModel::createPoints(double AnglePositive,double AngleNegative)
 {
     QList<QPointF> Temp;
@@ -110,7 +118,7 @@ QList<QPointF> WorkoutViewModel::createPoints(double AnglePositive,double AngleN
 
 
 /**
- * @brief Did not help resolve the issue of the dip in the curve as it goes to the linear part
+ * @brief deprecated
  * @param AnglePositive
  * @param AngleNegative
  * @return
@@ -154,7 +162,7 @@ QList<QPointF> WorkoutViewModel::createPointsWithRadius(double AnglePositive,dou
 }
 
 /**
- * @brief Did not help resolve the issue of the dip in the curve as it goes to the linear part
+ * @brief deprecated
  * @param AnglePositive
  * @param AngleNegative
  * @return
@@ -206,6 +214,43 @@ QList<QPointF> WorkoutViewModel::createPointsWithTwoRadiuses(double AnglePositiv
     return Temp;
 }
 
+int WorkoutViewModel::getWeightNegative() const
+{
+     return _WeightNegative;
+}
+
+QString WorkoutViewModel::getUserName() const
+{
+    return _UserName;
+}
+
+void WorkoutViewModel::setUserName(const QString &value)
+{
+    _UserName = value;
+}
+
+void WorkoutViewModel::setWeightNegative(int value)
+{
+    _WeightPositive = value;
+    emit weightPositiveChanged();
+}
+
+void WorkoutViewModel::setWeightPositive(int value)
+{
+    _WeightPositive = value;
+    emit weightPositiveChanged();
+}
+
+double WorkoutViewModel::getSecondsPerRepetition() const
+{
+    return _SecondsPerRepetition;
+}
+
+int WorkoutViewModel::getWeightPositive() const
+{
+    return _WeightPositive;
+}
+
 double WorkoutViewModel::getLineWidth() const
 {
     return _LineWidth;
@@ -221,15 +266,68 @@ double WorkoutViewModel::getScale() const
     return _Scale;
 }
 
+QString WorkoutViewModel::getWorkoutTypeGoal() const
+{
+
+    switch (_WorkoutGoal) {
+    case Figure:
+        return "Figur";
+
+    case Fitness:
+        return "Fitness";
+
+    case Weight:
+        return "Gewichtsreduktion";
+
+    case Athletik:
+        return "Athletik";
+
+    case Muscle:
+        return "Muskelaufbau";
+    }
+
+    return "0";
+}
+
+
+QString WorkoutViewModel::getWorkoutTypeString() const
+{
+    switch (_WorkoutType) {
+    case Regular:
+        return "Regulär";
+
+    case Negative:
+        return "Negativ";
+
+    case Adaptive:
+        return "Adaptiv";
+
+    case Isokinetic:
+        return "Isokinetisch";
+
+    case Method5:
+        return "Methode 5";
+    }
+
+    return "0";
+}
+
 double WorkoutViewModel::getRadius() const
 {
     return _Radius;
 }
 
 
-void WorkoutViewModel::decreaseWeight(int Value)
+void WorkoutViewModel::decreaseWeight(int Value, bool IsPositive)
 {
-    qDebug() << "Decrease Weight Big by" << Value;
+    qDebug() << "Decrease" << (IsPositive ? "Positive" : "Negative") << "Weight by" << Value;
+
+    if(IsPositive){
+        setWeightPositive(getWeightPositive() - Value);
+    }
+    else{
+        setWeightNegative(getWeightPositive() - Value);
+    }
 }
 
 int WorkoutViewModel::getBigValue() const
@@ -253,8 +351,20 @@ void WorkoutViewModel::populateSeries(QAbstractSeries *series)
     }
 }
 
-void WorkoutViewModel::increaseWeight(int Value)
+void WorkoutViewModel::increaseWeight(int Value, bool IsPositive)
 {
-    qDebug() << "Increase Weight Big by" << Value;
+    qDebug() << "Increase" << (IsPositive ? "Positive" : "Negative") <<  "Weight by" << Value;
+
+    if(IsPositive){
+        setWeightPositive(getWeightPositive() + Value);
+    }
+    else{
+        setWeightNegative(getWeightPositive() + Value);
+    }
+}
+
+void WorkoutViewModel::logoutUser()
+{
+      qDebug() << "Logout User";
 }
 

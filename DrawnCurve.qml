@@ -11,26 +11,53 @@ Canvas {
     property color dotColor: "gold"
     property color collidedDotColor: "#0dff3a"
 
-    property variant collidedDots:[]
+    property int collidedDotsCount: 0
+    property variant passedDots:[]
     property variant dots:[]
 
+    property real progress: 0
+    property int completedRepetitions: 0
+    property bool isOnPositvePath: true
 
-    MouseArea {
-        anchors.fill: parent
-        onClicked:
-        {
+    property real firstX: 0
+    property real totalDistance: 0
+
+    function reset(){
+        x = 0
+        collidedDotsCount = 0
+        progress = 0
+        completedRepetitions = 0
+        isOnPositvePath = true
+        firstX = 0
+        totalDistance = 0
+
+        //Reset the color and shift them back to the dots
+        while (passedDots.length != 0) {
+            var passedDot = passedDots.pop()
+            passedDot.color = dotColor
+            dots.unshift(passedDot)
 
         }
     }
 
 
-
-
     //Checks if the Rectangle collides with a dot, adds it to the collided dots and returns a boolean
     function checkForCollision(Rectangle){
+        //Set first X and totalDistance on first Execution, to calculate the progress
+        if(firstX == 0){
+            firstX = dots[0].x
+            totalDistance = dots[dots.length-1].x - firstX + dots[0].radius;
+        }
+
         //Distance of the Centers has to be lower than combined radiuses (with pythagoras)
         var XCenterRect = Rectangle.parent.mapToItem(myCanvas,Rectangle.x,Rectangle.y).x - Rectangle.width/2
         var YCenterRect = Rectangle.parent.mapToItem(myCanvas,Rectangle.x,Rectangle.y).y - Rectangle.width/2
+
+        //Set progress
+        progress =  (XCenterRect - firstX) / totalDistance;
+
+
+        if(dots.length == 0) return;
         var MaximalCollisionDistance = Math.pow(Rectangle.width/2 + dots[0].radius,2)
 
 
@@ -40,6 +67,29 @@ Canvas {
             var XCenter = Dot.x - Dot.radius - 11
             var YCenter = Dot.y - Dot.radius - 10
 
+            //check if the dot was allready passed, if so remove it and insert it at the passedDots
+            if(XCenterRect - Rectangle.width/2 - XCenter - Dot.radius > 0){
+                //console.log("Dot passed collidedDotsCount: " + collidedDotsCount);
+                passedDots.push(Dot);
+                dots.splice(i,1);
+                i--;
+                continue;
+            }
+
+
+            //check if dot is reachable, if not exit
+            if(XCenterRect + Rectangle.width/2 < XCenter - Dot.radius){
+                //console.log("Dot not in range collidedDotsCount: " + collidedDotsCount);
+                return false;
+            }
+
+            //Set repetitions. As we did not exit, the point is within reach and can be mentally added
+            //(as the first dot has to be substracted anyway it won't show)
+            completedRepetitions = Math.floor(passedDots.length / 4)
+
+
+            //Set isOnPositvePath - again the next dot is within reach, but not yet past, so mentally add it
+            isOnPositvePath = passedDots.length % 4 < 2
 
 
             var DistanceOfCenters = Math.pow(XCenterRect - XCenter,2) + Math.pow(YCenterRect - YCenter,2)
@@ -48,12 +98,12 @@ Canvas {
             if(DistanceOfCenters < MaximalCollisionDistance){
                 //console.log("Collision detected!!!!");
 
-                if(collidedDots.length == 0 || collidedDots[collidedDots.length - 1] != Dot){
-                    //console.log("Dot added. DotCount: " + collidedDots.length);
+                collidedDotsCount ++
+                //console.log("Dot collided. collidedDotsCount: " + collidedDotsCount);
+                passedDots.push(Dot)
+                dots.splice(i,1);
+                Dot.color = collidedDotColor
 
-                    collidedDots.push(Dot)
-                    Dot.color = collidedDotColor
-                }
 
                 return true;
             }
@@ -130,12 +180,14 @@ Canvas {
             var EndAngleTop = 3/2 * Math.PI + AngleNegativeRad
             context.arc(X + TotalOffset * i + OffsetPositive,Y2 + R, R, StartAngleTop, EndAngleTop, false)
 
-            //to get rid of the last radius, as it has to be special
-            if(i == ViewModel.getRepetitions()-1) continue
 
             //Bottom Radius
             var StartAngleBottom = Math.PI/2 + AngleNegativeRad
             var EndAngleBottom =  Math.PI/2 - AnglePositiveRad
+
+
+            //to get rid of the last radius, as it has to be special
+            if(i == ViewModel.getRepetitions()-1) continue
             context.arc(X + TotalOffset * (i + 1), Y1 - R, R, StartAngleBottom , EndAngleBottom , true)
         }
 
