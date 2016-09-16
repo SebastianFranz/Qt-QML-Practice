@@ -218,7 +218,7 @@ Rectangle {
             anchors.bottom: parent.bottom
             anchors.topMargin: 55
             anchors.bottomMargin: 55
-            anchors.rightMargin: 40
+            anchors.rightMargin: 50
             anchors.leftMargin: 20
             clip: true
 
@@ -356,7 +356,7 @@ Rectangle {
             property int contentWidth: 140
             property int contentHeigth: 45
             anchors.right: parent.right
-            anchors.rightMargin: 50
+            anchors.rightMargin: 40
 
             state: "positive"
             states: [
@@ -512,9 +512,7 @@ Rectangle {
             color: backgroundColor
             Text{
                 id: repetitionsText
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.rightMargin: 20
+                anchors.centerIn: parent
                 font.family: fontFamily
                 color: fontColor
                 font.pixelSize: parent.height * 0.6
