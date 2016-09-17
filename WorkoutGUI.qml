@@ -97,9 +97,10 @@ Rectangle {
             id:userImage
             anchors.verticalCenter: buttonLogout.verticalCenter
             anchors.right: userName.left
-            anchors.margins: 10
-            height: userName.height
-            width: height
+            anchors.margins: 5
+            source: "Star.png"
+            height: 25
+            width: 25
             layer.enabled: true
             layer.effect: DropShadow {
                 transparentBorder: true

@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     QObject::connect(viewer.engine(), &QQmlEngine::quit, &viewer, &QWindow::close);
 
     viewer.setSource(QUrl("qrc:/WorkoutGUI.qml"));
-   // viewer.setSource(QUrl("qrc:/DrawnCurve.qml"));
+    //viewer.setSource(QUrl("qrc:/Star.qml"));
     viewer.setResizeMode(QQuickView::SizeRootObjectToView);
     viewer.show();
 

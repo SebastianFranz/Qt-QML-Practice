@@ -4,5 +4,6 @@
         <file>Spline.qml</file>
         <file>DrawnCurve.qml</file>
         <file>WorkoutGUI.qml</file>
+        <file>Star.qml</file>
     </qresource>
 </RCC>
