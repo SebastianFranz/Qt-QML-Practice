@@ -84,7 +84,7 @@ Rectangle {
             anchors.verticalCenter: buttonLogout.verticalCenter
             anchors.right: buttonLogout.left
             anchors.margins: 10
-            text: "<i>" + ViewModel.getUserName() + "</i>"
+            text: "<i>" + ViewModel.UserName + "</i>"
             font.pixelSize: 25
             layer.enabled: true
             layer.effect: DropShadow {

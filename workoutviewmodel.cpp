@@ -1,5 +1,6 @@
 #include <QtMath>
 #include <QtCharts/QXYSeries>
+#include <QInputDialog>
 #include "workoutviewmodel.h"
 
 QT_CHARTS_USE_NAMESPACE
@@ -7,6 +8,13 @@ QT_CHARTS_USE_NAMESPACE
 Q_DECLARE_METATYPE(QAbstractSeries *)
 Q_DECLARE_METATYPE(QXYSeries *)
 
+
+WorkoutViewModel::WorkoutViewModel(QObject *parent) : SerializableObject(parent)
+{
+    connect(this,&WorkoutViewModel::weightNegativeChanged,this,&WorkoutViewModel::handleWorkoutViewChanged);
+    connect(this,&WorkoutViewModel::weightPositiveChanged,this,&WorkoutViewModel::handleWorkoutViewChanged);
+    connect(this,&WorkoutViewModel::userNameChanged,this,&WorkoutViewModel::handleWorkoutViewChanged);
+}
 
 //TODO Special Interface for Isokinetic and Method5
 
@@ -19,10 +27,6 @@ int WorkoutViewModel::getStartsAtBottom() const
     return _StartsAtBottom;
 }
 
-WorkoutViewModel::WorkoutViewModel(QObject *parent) : QObject(parent)
-{
-    
-}
 
 double WorkoutViewModel::getAnglePositive() const
 {
@@ -227,6 +231,7 @@ QString WorkoutViewModel::getUserName() const
 void WorkoutViewModel::setUserName(const QString &value)
 {
     _UserName = value;
+    emit userNameChanged();
 }
 
 void WorkoutViewModel::setWeightNegative(int value)
@@ -239,6 +244,61 @@ void WorkoutViewModel::setWeightPositive(int value)
 {
     _WeightPositive = value;
     emit weightPositiveChanged();
+}
+
+void WorkoutViewModel::handleWorkoutViewChanged()
+{
+    emit workoutViewChanged();
+}
+
+void WorkoutViewModel::setBigValue(int BigValue)
+{
+    _BigValue = BigValue;
+}
+
+void WorkoutViewModel::setLinearLength(double LinearLength)
+{
+    _LinearLength = LinearLength;
+}
+
+void WorkoutViewModel::setLineWidth(double LineWidth)
+{
+    _LineWidth = LineWidth;
+}
+
+void WorkoutViewModel::setRepetitions(int Repetitions)
+{
+    _Repetitions = Repetitions;
+}
+
+void WorkoutViewModel::setRadius(double Radius)
+{
+    _Radius = Radius;
+}
+
+void WorkoutViewModel::setScale(double Scale)
+{
+    _Scale = Scale;
+}
+
+void WorkoutViewModel::setSecondsPerRepetition(double SecondsPerRepetition)
+{
+    _SecondsPerRepetition = SecondsPerRepetition;
+}
+
+void WorkoutViewModel::setStartsAtBottom(bool StartsAtBottom)
+{
+    _StartsAtBottom = StartsAtBottom;
+}
+
+void WorkoutViewModel::setUserID(const QString &UserID)
+{
+    _UserID = UserID;
+}
+
+QString WorkoutViewModel::getUserID() const
+{
+    return _UserID;
 }
 
 double WorkoutViewModel::getSecondsPerRepetition() const
@@ -365,6 +425,12 @@ void WorkoutViewModel::increaseWeight(int Value, bool IsPositive)
 
 void WorkoutViewModel::logoutUser()
 {
-      qDebug() << "Logout User";
+    bool ok;
+    QString text = QInputDialog::getText(NULL,"Benutzername","Bitte neuen Benutzername eingeben.",QLineEdit::Normal,"",&ok);
+            //this, tr("QInputDialog::getText()"),tr("User name:"), QLineEdit::Normal,, &ok)
+
+    if (ok && !text.isEmpty())
+        qDebug() << "New Username:" << text;
+       this->setUserName(text);
 }
 

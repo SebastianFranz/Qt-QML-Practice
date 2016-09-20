@@ -27,21 +27,26 @@
 **
 ****************************************************************************/
 
-#include <QQuickView>
 #include <QApplication>
+#include <QQuickView>
 #include <QQmlEngine>
 #include <QQmlContext>
-#include "workoutviewmodel.h"
+#include "guicontroller.h"
+
 
 int main(int argc, char *argv[])
 {
     // Qt Charts uses Qt Graphics View Framework for drawing, therefore QApplication must be used.
     QApplication app(argc, argv);
 
+    GUIController controller;
+
+
+    //Kicking off the UI
     QQuickView viewer;
 
-    QScopedPointer<WorkoutViewModel> Model(new WorkoutViewModel);
-    viewer.rootContext()->setContextProperty("ViewModel",Model.data());
+   // QScopedPointer<WorkoutViewModel> Model(new WorkoutViewModel);
+    viewer.rootContext()->setContextProperty("ViewModel",&controller.ViewModel());
 
     QObject::connect(viewer.engine(), &QQmlEngine::quit, &viewer, &QWindow::close);
 
@@ -49,6 +54,7 @@ int main(int argc, char *argv[])
     //viewer.setSource(QUrl("qrc:/Star.qml"));
     viewer.setResizeMode(QQuickView::SizeRootObjectToView);
     viewer.show();
+
 
     return app.exec();
 }

@@ -1,5 +1,7 @@
-#QT += core gui
+#QT += gui
 QT += quick charts
+QT += core
+QT += network
 #QT += widgets
 
 
@@ -9,11 +11,15 @@ TEMPLATE = app
 INCLUDEPATH += $$_PRO_FILE_PWD_
 
 
-SOURCES += *.cpp
+SOURCES += *.cpp \
+    serializableobject.cpp \
+    guicontroller.cpp
 OTHER_FILES += *.qml
 RESOURCES += *.qrc \
     images.qrc
-HEADERS += *.h
+HEADERS += *.h \
+    serializableobject.h \
+    guicontroller.h
 
 DISTFILES += \
     Pacman.qml \
