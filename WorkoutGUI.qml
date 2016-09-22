@@ -262,14 +262,9 @@ Rectangle {
                     easing.period: 0.2
 
                 }
-                /* NumberAnimation on y {
-                    to: 180 //curve.y + curve.height - 1.5*height
-                    duration: 2000
-                    running: true
-                        easing.type: Easing.InBounce;
-                                            easing.amplitude: 10.0;
-                                            easing.period: 50.5
-                }*/
+                Behavior on rotation{
+                    NumberAnimation { duration: 100 }
+                }
 
                 ParticleSystem { id: bubbles; running: visible }
                 ImageParticle {
@@ -643,8 +638,8 @@ Rectangle {
 
 
                     "<h3>Deine Ausbeute</h3></br><p style='text-align:center'><b><font size='3000'>" +
-                      Result + "%</font></b></p>" +
-                      "</br><p style='text-align:center'>" + Text + "</p>"
+                            Result + "%</font></b></p>" +
+                            "</br><p style='text-align:center'>" + Text + "</p>"
                 }
             }
             PropertyChanges {
@@ -654,8 +649,6 @@ Rectangle {
         }
     ]
 
-    //
-    //
 
     Component{
         id: buttonStyle

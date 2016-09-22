@@ -9,7 +9,8 @@ Canvas {
 
     property color pathColor: "black"
     property color dotColor: "gold"
-    property color collidedDotColor: "#0dff3a"
+    property color collidedDotColor: Qt.darker("#0dff3a")
+    property int dotDiameter: 0
 
     property int collidedDotsCount: 0
     property variant passedDots:[]
@@ -35,6 +36,9 @@ Canvas {
         while (passedDots.length != 0) {
             var passedDot = passedDots.pop()
             passedDot.color = dotColor
+            passedDot.height = dotDiameter
+            passedDot.width = dotDiameter
+            passedDot.border.width = 0
             dots.unshift(passedDot)
 
         }
@@ -102,10 +106,74 @@ Canvas {
                 //console.log("Dot collided. collidedDotsCount: " + collidedDotsCount);
                 passedDots.push(Dot)
                 dots.splice(i,1);
-                Dot.color = collidedDotColor
+                eatenDotFirst.target=Dot
+                eatenDot.restart()
 
 
                 return true;
+            }
+        }
+    }
+
+
+    SequentialAnimation{
+        property QtObject target:myCanvas
+
+        id: eatenDot
+
+        ParallelAnimation{
+            NumberAnimation{
+                id: eatenDotFirst
+                //myCanvas is only a placeholder to get rid of an Error on initialisation
+                target: myCanvas
+                properties: "width,height"
+                to:1
+                duration: 200
+            }
+            NumberAnimation{
+                target: eatenDotFirst.target
+                properties: "y"
+                from: target.y
+                to:target.y+target.height/2
+                duration: eatenDotFirst.duration
+            }
+        }
+        ParallelAnimation{
+            NumberAnimation{
+               id: eatendotSecond
+                target: eatenDotFirst.target
+                properties: "width,height"
+                to:dotDiameter
+                duration: 100
+                easing:OutBack
+            }
+            NumberAnimation{
+                target: eatenDotFirst.target
+                properties: "y"
+                to:target.y
+                duration: eatendotSecond.duration
+            }
+
+            ColorAnimation {
+                target: eatenDotFirst.target
+                properties: "color"
+                to: collidedDotColor
+                duration: eatendotSecond.duration
+            }
+
+            NumberAnimation{
+                target: eatenDotFirst.target
+                properties: "border.width"
+                to:3
+                duration: eatendotSecond.duration
+            }
+
+            ColorAnimation {
+                target: eatenDotFirst.target
+                properties: "border.color"
+                from: target.color
+                to: Qt.lighter(collidedDotColor)
+                duration: eatendotSecond.duration
             }
         }
     }
@@ -152,6 +220,7 @@ Canvas {
         var ScaleFactorWidth = myCanvas.width / ((TotalLength + ViewModel.getLineWidth()) * ScaleFactor)
         context.scale(ScaleFactorWidth, 1)
         myCanvas.width = TotalLength * ScaleFactor
+
 
         context.scale(ScaleFactor,ScaleFactor)
         context.translate(ViewModel.getLineWidth()/2,ViewModel.getLineWidth()/2)
@@ -206,6 +275,8 @@ Canvas {
 
         //Diameter of the ellipse
         var D = ViewModel.getLineWidth()/2
+        dotDiameter = D*ScaleFactor
+
 
         var OffsetRadiusPositiveY = (1 - Math.cos(AnglePositiveRad/2)) * R
         var OffsetRadiusNegativeY = (1 - Math.cos(AngleNegativeRad/2)) * R
@@ -213,7 +284,6 @@ Canvas {
         //Don't ask my why this is necessary ....
         //Makes me a bit sick ... but works perfectly - non the less WTF!!!!
         var ScaleFactorX = ScaleFactor-0.018*(2040/TotalLength)
-
 
         for(var i = 0; i < ViewModel.getRepetitions(); i++){
             //Not sure which ones I like best, so I leave them in there
@@ -230,12 +300,15 @@ Canvas {
             dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + dotColor + '"; x: ' +(X + TotalOffset * i + D/2)*ScaleFactorX +
                                          '; y: ' + (Y1 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                          '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
+
             dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + dotColor + '"; x: ' + (X + TotalOffset * i + OffsetPositive/2 + D/2)*ScaleFactorX +
                                          '; y: ' + ((Y1 + Y2)/2 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                          '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
+
             dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + dotColor + '"; x: ' + (X + TotalOffset * i + OffsetPositive + D/2)*ScaleFactorX +
                                          '; y: ' + (Y2 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                          '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
+
             dots.push(Qt.createQmlObject('import QtQuick 2.0; Rectangle {color: "' + dotColor + '"; x: ' + (X + TotalOffset * (i+1) - OffsetNegative/2 + D/2)*ScaleFactorX +
                                          '; y: ' + ((Y1 + Y2)/2 + D/2)*ScaleFactor + '; width: ' + D*ScaleFactor + '; height: ' + D*ScaleFactor +
                                          '; radius: ' + D/2*ScaleFactor + '}',myCanvas))
